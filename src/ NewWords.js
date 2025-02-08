@@ -18,7 +18,7 @@ const NewWords = () => {
     );
     if (pWords.length) {
       shuffle(pWords);
-      setPendingWords(pWords.slice(1, 3));
+      setPendingWords(pWords);
     } else {
       setPendingWords(DEFAULT);
     }
