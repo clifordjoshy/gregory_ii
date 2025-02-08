@@ -12,6 +12,8 @@ const Word = ({ word, markWord }) => {
         padding: "10px",
         maxHeight: "90%",
         overflowY: "scroll",
+        msOverflowStyle: "none",
+        scrollbarWidth: "none",
       }}
     >
       <Card.Title>{word.word}</Card.Title>
