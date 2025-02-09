@@ -125,12 +125,12 @@ const ControlPanel = () => {
             />{" "}
             <SettingsRow
               setting={"Confused"}
-              status={currentWordStatus.completed}
+              status={currentWordStatus.confused}
               onReset={() => onReset(currentWord, "confused")}
             />{" "}
             <SettingsRow
               setting={"Forgotten"}
-              status={currentWordStatus.completed}
+              status={currentWordStatus.forgotten}
               onReset={() => onReset(currentWord, "forgotten")}
             />
           </Card>
