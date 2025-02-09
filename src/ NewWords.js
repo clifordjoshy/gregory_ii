@@ -36,6 +36,10 @@ const NewWords = () => {
         setPendingWords(pendingWords.slice(1));
       }
 
+      const completed = JSON.parse(localStorage.getItem("completed") || "[]");
+      completed.push(word);
+      localStorage.setItem("completed", JSON.stringify(completed));
+
       if (status === "success") {
       } else if (status === "failure") {
         const confused = JSON.parse(localStorage.getItem("confused") || "[]");

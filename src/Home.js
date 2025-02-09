@@ -24,6 +24,11 @@ const Home = () => {
       <div>
         <Button onClick={() => navigate("/forgotten")}>Forgotten Words</Button>
       </div>
+      <div>
+        <Button variant="secondary" onClick={() => navigate("/control")}>
+          Control Panel
+        </Button>
+      </div>
     </div>
   );
 };

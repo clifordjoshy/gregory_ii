@@ -3,6 +3,7 @@ import Home from "./Home";
 import NewWords from "./ NewWords";
 import ConfusedWords from "./ConfusedWords";
 import ForgottenWords from "./ForgottenWords";
+import ControlPanel from "./ControlPanel";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/new" element={<NewWords />} />
         <Route path="/confused" element={<ConfusedWords />} />
         <Route path="/forgotten" element={<ForgottenWords />} />
+        <Route path="/control" element={<ControlPanel />} />
       </Routes>
     </Router>
   );
