@@ -7,14 +7,11 @@ const Word = ({ word, markWord, count }) => {
   return (
     <Card
       style={{
-        width: "80%",
+        width: "80vw",
         maxWidth: "30em",
         padding: "10px",
-        maxHeight: "90%",
-        overflowY: "scroll",
-        msOverflowStyle: "none",
-        scrollbarWidth: "none",
-        position: "fixed",
+        marginTop: "20px",
+        marginBottom: "20px",
       }}
     >
       <Card.Title>{word.word}</Card.Title>
