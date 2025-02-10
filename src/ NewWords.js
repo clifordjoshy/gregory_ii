@@ -64,7 +64,11 @@ const NewWords = () => {
         height: "100%",
       }}
     >
-      <Word word={pendingWords[0]} markWord={markWord} />
+      <Word
+        word={pendingWords[0]}
+        markWord={markWord}
+        count={pendingWords.length}
+      />
     </div>
   );
 };

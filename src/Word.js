@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Card } from "react-bootstrap";
 
-const Word = ({ word, markWord }) => {
+const Word = ({ word, markWord, count }) => {
   const [showDescription, setShowDescription] = useState(false);
 
   return (
@@ -14,9 +14,22 @@ const Word = ({ word, markWord }) => {
         overflowY: "scroll",
         msOverflowStyle: "none",
         scrollbarWidth: "none",
+        position: "fixed",
       }}
     >
       <Card.Title>{word.word}</Card.Title>
+      <div
+        style={{
+          textAlign: "end",
+          opacity: "50%",
+          position: "absolute",
+          top: 0,
+          right: 0,
+          padding: "5px",
+        }}
+      >
+        {count}
+      </div>
 
       <Button
         variant="primary"
