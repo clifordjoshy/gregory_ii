@@ -114,7 +114,6 @@ const ControlPanel = () => {
     reader.onload = (e) => {
       const { completed, confused, forgotten } = JSON.parse(reader.result);
 
-      console.log(completed);
       localStorage.setItem("confused", JSON.stringify(confused));
       localStorage.setItem("forgotten", JSON.stringify(forgotten));
       localStorage.setItem("completed", JSON.stringify(completed));
