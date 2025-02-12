@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import words from "./words.json";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
@@ -54,9 +54,6 @@ const ControlPanel = () => {
     const forgottenWords = JSON.parse(
       localStorage.getItem("forgotten") || "[]"
     );
-    console.log(completedWords);
-    console.log(confusedWords);
-    console.log(forgottenWords);
 
     setCurrentWordStatus({
       completed: !!completedWords.find((w) => w === currentWord),
@@ -85,6 +82,48 @@ const ControlPanel = () => {
     });
   };
 
+  const onExport = () => {
+    const content = {
+      completed: JSON.parse(localStorage.getItem("completed") || "[]"),
+      confused: JSON.parse(localStorage.getItem("confused") || "[]"),
+      forgotten: JSON.parse(localStorage.getItem("forgotten") || "[]"),
+    };
+
+    const contentText = JSON.stringify(content);
+
+    var element = document.createElement("a");
+    element.setAttribute(
+      "href",
+      "data:text/plain;charset=utf-8," + encodeURIComponent(contentText)
+    );
+    element.setAttribute("download", "words.txt");
+
+    element.style.display = "none";
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+  };
+
+  const inputFile = useRef(null);
+  const onImport = (file) => {
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const { completed, confused, forgotten } = JSON.parse(reader.result);
+
+      console.log(completed);
+      localStorage.setItem("confused", JSON.stringify(confused));
+      localStorage.setItem("forgotten", JSON.stringify(forgotten));
+      localStorage.setItem("completed", JSON.stringify(completed));
+      alert("success");
+    };
+
+    reader.readAsText(file);
+  };
+
   return (
     <div
       style={{
@@ -106,35 +145,67 @@ const ControlPanel = () => {
           maxWidth: "30em",
         }}
       >
-        <Form.Control
-          type="text"
-          onChange={onWordUpdate}
-          placeholder="Enter a word"
-        />
-        {currentWord && (
-          <Card
-            style={{
-              padding: "10px",
-            }}
+        <div
+          style={{
+            display: "flex",
+            width: "100%",
+            gap: "20px",
+            padding: "0 3px",
+          }}
+        >
+          <Button style={{ flexGrow: 1 }} onClick={onExport}>
+            Export
+          </Button>
+          <Button
+            style={{ flexGrow: 1 }}
+            onClick={() => inputFile.current.click()}
           >
-            <Card.Title>{currentWord}</Card.Title>
-            <SettingsRow
-              setting={"Completed"}
-              status={currentWordStatus.completed}
-              onReset={() => onReset(currentWord, "completed")}
-            />{" "}
-            <SettingsRow
-              setting={"Confused"}
-              status={currentWordStatus.confused}
-              onReset={() => onReset(currentWord, "confused")}
-            />{" "}
-            <SettingsRow
-              setting={"Forgotten"}
-              status={currentWordStatus.forgotten}
-              onReset={() => onReset(currentWord, "forgotten")}
-            />
-          </Card>
-        )}
+            Import
+          </Button>
+
+          <input
+            type="file"
+            id="file"
+            accept=".txt"
+            ref={inputFile}
+            style={{ display: "none" }}
+            onChange={(event) => onImport(event.target.files[0])}
+          />
+        </div>
+
+        <Form.Group>
+          <Form.Label>Word Config</Form.Label>
+
+          <Form.Control
+            type="text"
+            onChange={onWordUpdate}
+            placeholder="Enter a word"
+          />
+          {currentWord && (
+            <Card
+              style={{
+                padding: "10px",
+              }}
+            >
+              <Card.Title>{currentWord}</Card.Title>
+              <SettingsRow
+                setting={"Completed"}
+                status={currentWordStatus.completed}
+                onReset={() => onReset(currentWord, "completed")}
+              />{" "}
+              <SettingsRow
+                setting={"Confused"}
+                status={currentWordStatus.confused}
+                onReset={() => onReset(currentWord, "confused")}
+              />{" "}
+              <SettingsRow
+                setting={"Forgotten"}
+                status={currentWordStatus.forgotten}
+                onReset={() => onReset(currentWord, "forgotten")}
+              />
+            </Card>
+          )}
+        </Form.Group>
       </div>
     </div>
   );
