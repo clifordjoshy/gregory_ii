@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Home";
-import NewWords from "./ NewWords";
+import NewWords from "./NewWords";
 import ConfusedWords from "./ConfusedWords";
 import ForgottenWords from "./ForgottenWords";
 import ControlPanel from "./ControlPanel";

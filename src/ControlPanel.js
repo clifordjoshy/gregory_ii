@@ -4,34 +4,6 @@ import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
 import { Button } from "react-bootstrap";
 
-const SettingsRow = ({ setting, status, onReset }) => {
-  return (
-    <>
-      <div
-        style={{
-          marginTop: "10px",
-          display: "flex",
-          gap: "30px",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <div style={{ flexGrow: 2, height: "100%", alignContent: "center" }}>
-          {setting}: {status.toString()}
-        </div>
-        <Button
-          disabled={!status}
-          variant="danger"
-          style={{ flexGrow: 1 }}
-          onClick={onReset}
-        >
-          RESET
-        </Button>
-      </div>
-    </>
-  );
-};
-
 const ControlPanel = () => {
   const [currentWord, setCurrentWord] = useState(null);
 
@@ -39,8 +11,10 @@ const ControlPanel = () => {
     const text = e.target.value;
 
     const newWord = words.find((w) => w.word.startsWith(text));
-    if (newWord && currentWord !== newWord.word) {
+    if (text && newWord) {
       setCurrentWord(newWord.word);
+    } else {
+      setCurrentWord(null);
     }
   };
 
@@ -62,7 +36,7 @@ const ControlPanel = () => {
     });
   }, [currentWord]);
 
-  const onReset = (word, what) => {
+  const onReset = (word) => {
     let completedWords = JSON.parse(localStorage.getItem("completed") || "[]");
     let confusedWords = JSON.parse(localStorage.getItem("confused") || "[]");
     let forgottenWords = JSON.parse(localStorage.getItem("forgotten") || "[]");
@@ -123,6 +97,14 @@ const ControlPanel = () => {
     reader.readAsText(file);
   };
 
+  const onClearForgotten = () => {
+    const confusedWords = JSON.parse(localStorage.getItem("confused") || "[]");
+
+    localStorage.setItem("forgotten", JSON.stringify(confusedWords));
+
+    alert("forgotten words reset");
+  };
+
   return (
     <div
       style={{
@@ -130,6 +112,8 @@ const ControlPanel = () => {
         height: "100%",
         flexDirection: "column",
         alignItems: "center",
+        width: "80vw",
+        maxWidth: "30em",
       }}
     >
       <div
@@ -172,6 +156,14 @@ const ControlPanel = () => {
           />
         </div>
 
+        <Button
+          style={{ width: "100%" }}
+          variant="warning"
+          onClick={onClearForgotten}
+        >
+          Clear Forgotten
+        </Button>
+
         <Form.Group>
           <Form.Label>Word Config</Form.Label>
 
@@ -187,21 +179,21 @@ const ControlPanel = () => {
               }}
             >
               <Card.Title>{currentWord}</Card.Title>
-              <SettingsRow
-                setting={"Completed"}
-                status={currentWordStatus.completed}
-                onReset={() => onReset(currentWord, "completed")}
-              />{" "}
-              <SettingsRow
-                setting={"Confused"}
-                status={currentWordStatus.confused}
-                onReset={() => onReset(currentWord, "confused")}
-              />{" "}
-              <SettingsRow
-                setting={"Forgotten"}
-                status={currentWordStatus.forgotten}
-                onReset={() => onReset(currentWord, "forgotten")}
-              />
+              <Card.Text>
+                Completed: {currentWordStatus.completed.toString()}
+                <br />
+                Confused: {currentWordStatus.confused.toString()}
+                <br />
+                Forgotten: {currentWordStatus.forgotten.toString()}
+              </Card.Text>
+
+              <Button
+                variant="danger"
+                onClick={() => onReset(currentWord)}
+                disabled={!currentWordStatus.completed}
+              >
+                RESET
+              </Button>
             </Card>
           )}
         </Form.Group>

@@ -31,7 +31,7 @@ const Word = ({ word, markWord, count }) => {
       <Button
         variant="primary"
         style={{ marginTop: "10px", marginBottom: "10px" }}
-        onClick={() => setShowDescription(true)}
+        onClick={() => setShowDescription(!showDescription)}
       >
         SHOW
       </Button>
